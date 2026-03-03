@@ -30,7 +30,7 @@ def check_password():
 def password_entered():
     """入力されたパスワードをチェックする"""
     # ここに好きなパスワードを設定してください（例: "office2024"）
-    if st.session_state["password"] == "Tokyo":
+    if st.session_state["password"] == "office2024":
         st.session_state["password_correct"] = True
         del st.session_state["password"]  # セキュリティのため入力を消去
     else:
@@ -69,36 +69,20 @@ if check_password():
     current_brackets = [(0, 3e6, c_r1), (3e6, 3e7, c_r2), (3e7, 3e8, c_r3), (3e8, float('inf'), c_r4)]
 
     # --- メイン画面：改定案の作成 ---
-    # --- メイン画面：改定案の作成 (操作性改善版) ---
-    st.subheader("📝 改定案の詳細設定")
-    st.info("💡 スライダーで大まかに動かし、右側の入力ボックスで微調整が可能です。")
-    
-    # 境界金額の設定（スライダーの刻みを細かくし、入力欄も追加）
-    st.write("**【境界金額の変更 (万円)】**")
-    col_b1, col_b2, col_b3 = st.columns(3)
-    with col_b1:
-        b1 = st.number_input("第1境界", min_value=100, max_value=1000, value=300, step=10) * 10000
-    with col_b2:
-        b2 = st.number_input("第2境界", min_value=1000, max_value=5000, value=3000, step=50) * 10000
-    with col_b3:
-        b3 = st.number_input("第3境界", min_value=5000, max_value=50000, value=30000, step=500) * 10000
-    
-    # 報酬割合の設定（スライダーと数値入力を併用）
-    st.write("**【各層の報酬割合 (%)】**")
-    col_r1, col_r2, col_r3, col_r4 = st.columns(4)
-    
-    with col_r1:
-        r1 = st.number_input("新 第1層 (%)", 0.0, 40.0, 20.0, step=0.1, format="%.1f")
-    with col_r2:
-        r2 = st.number_input("新 第2層 (%)", 0.0, 40.0, 15.0, step=0.1, format="%.1f")
-    with col_r3:
-        r3 = st.number_input("新 第3層 (%)", 0.0, 40.0, 10.0, step=0.1, format="%.1f")
-    with col_r4:
-        r4 = st.number_input("新 第4層 (%)", 0.0, 40.0, 6.0, step=0.1, format="%.1f")
+    col_p1, col_p2, col_p3 = st.columns(3)
+    with col_p1:
+        st.write("**【境界金額の変更】**")
+        b1 = st.slider("第1境界", 100, 1000, 300) * 10000
+        b2 = st.slider("第2境界", 1000, 5000, 3000) * 10000
+        b3 = st.slider("第3境界", 5000, 50000, 30000) * 10000
+    with col_p2:
+        st.write("**【改定案の割合】**")
+        r1, r2, r3, r4 = [st.slider(f"新 第{i}層", 0.0, 40.0, v) for i, v in enumerate([20.0, 15.0, 10.0, 6.0], 1)]
+    with col_p3:
+        st.write("**【市場の反応】**")
+        retention = st.slider("想定維持率 (%)", 50, 100, 95) / 100
 
-# 市場反応（維持率）
-st.write("**【市場の反応】**")
-retention = st.slider("想定される顧客維持率 (%)", 50.0, 100.0, 95.0, step=0.5) / 100
+    new_brackets = [(0, b1, r1), (b1, b2, r2), (b2, b3, r3), (b3, float('inf'), r4)]
 
     # --- 計算と結果表示 ---
     current_total = sum(calculate_fee(r[0], current_brackets) * r[1] for r in edited_df.values)
