@@ -36,7 +36,7 @@ if check_password():
     st.title("⚖️ 弁護士報酬シミュレーター")
 
     # --- 4. サイドバー：案件分布 ＆ 現状の基準 ---
-    st.sidebar.header("📊 1. 案件分布（ベースデータ）")
+    st.sidebar.header("1. 案件分布（ベースデータ）")
     
     base_data = pd.DataFrame({
         "解決金 (円)": [500000, 1500000, 5000000, 10000000, 50000000, 400000000],
@@ -62,7 +62,7 @@ if check_password():
     )
 
     st.sidebar.divider()
-    st.sidebar.header("📉 2. 現状の基準設定")
+    st.sidebar.header("2. 現状の基準設定")
     
     # 【修正2】単位（万円）の明示
     cb1 = st.sidebar.number_input("現状: 第1境界 (万円)", 100, 1000, 300, 10, key="cb1") * 10000
@@ -70,28 +70,28 @@ if check_password():
     cb3 = st.sidebar.number_input("現状: 第3境界 (万円)", 5000, 50000, 30000, 500, key="cb3") * 10000
     
     # 【修正3】スライダーを数値入力（＋/－方式）に変更
-    cr1 = st.sidebar.number_input("現状: 第1層 (%)", 0.0, 40.0, 20.0, 0.5, key="cr1")
+    cr1 = st.sidebar.number_input("現状: 第1層 (%)", 0.0, 40.0, 24.0, 0.5, key="cr1")
     cr2 = st.sidebar.number_input("現状: 第2層 (%)", 0.0, 40.0, 15.0, 0.5, key="cr2")
-    cr3 = st.sidebar.number_input("現状: 第3層 (%)", 0.0, 40.0, 10.0, 0.5, key="cr3")
-    cr4 = st.sidebar.number_input("現状: 第4層 (%)", 0.0, 40.0, 6.0, 0.5, key="cr4")
+    cr3 = st.sidebar.number_input("現状: 第3層 (%)", 0.0, 40.0, 9.0, 0.5, key="cr3")
+    cr4 = st.sidebar.number_input("現状: 第4層 (%)", 0.0, 40.0, 4.5, 0.5, key="cr4")
 
     current_brackets = [(0, cb1, cr1), (cb1, cb2, cr2), (cb2, cb3, cr3), (cb3, float('inf'), cr4)]
 
     # --- 5. メイン画面：改定案の設定 ---
-    st.subheader("🛠 3. 改定案のパラメータ調整")
+    st.subheader("3. 改定案のパラメータ調整")
     
     col_p1, col_p2, col_p3 = st.columns(3)
     with col_p1:
         st.write("**【境界金額 (万円)】**")
-        nb1 = st.number_input("改定: 第1境界 (万円)", 100, 1000, 300, 10) * 10000
-        nb2 = st.number_input("改定: 第2境界 (万円)", 1000, 5000, 3000, 50) * 10000
-        nb3 = st.number_input("改定: 第3境界 (万円)", 5000, 50000, 30000, 500) * 10000
+        nb1 = st.number_input("改定: 第1境界 (万円)", 100, 1000, 500, 10) * 10000
+        nb2 = st.number_input("改定: 第2境界 (万円)", 1000, 10000, 5000, 50) * 10000
+        nb3 = st.number_input("改定: 第3境界 (万円)", 5000, 100000, 50000, 500) * 10000
     with col_p2:
         st.write("**【報酬割合 (%)】**")
-        nr1 = st.number_input("改定: 第1層 (%)", 0.0, 40.0, 22.0, 0.1, format="%.1f")
-        nr2 = st.number_input("改定: 第2層 (%)", 0.0, 40.0, 17.0, 0.1, format="%.1f")
-        nr3 = st.number_input("改定: 第3層 (%)", 0.0, 40.0, 11.0, 0.1, format="%.1f")
-        nr4 = st.number_input("改定: 第4層 (%)", 0.0, 40.0, 7.0, 0.1, format="%.1f")
+        nr1 = st.number_input("改定: 第1層 (%)", 0.0, 40.0, 24.0, 0.1, format="%.1f")
+        nr2 = st.number_input("改定: 第2層 (%)", 0.0, 40.0, 15.0, 0.1, format="%.1f")
+        nr3 = st.number_input("改定: 第3層 (%)", 0.0, 40.0, 9.0, 0.1, format="%.1f")
+        nr4 = st.number_input("改定: 第4層 (%)", 0.0, 40.0, 4.5, 0.1, format="%.1f")
     with col_p3:
         st.write("**【市場反応】**")
         # 【修正4】スライダーを数値入力（＋/－方式）に変更
@@ -127,7 +127,7 @@ if check_password():
 
     # --- 7. 詳細テーブル ＆ CSV ---
     st.divider()
-    st.subheader("🧐 1件あたりの詳細比較表")
+    st.subheader("・1件あたりの詳細比較表")
     sample_amounts = [500_000, 1_500_000, 3_000_000, 5_000_000, 10_000_000, 30_000_000, 100_000_000, 500_000_000]
     comp_rows = []
     for amt in sample_amounts:
