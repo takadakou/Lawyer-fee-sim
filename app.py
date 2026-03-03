@@ -118,7 +118,7 @@ if check_password():
     # 収益比較グラフ
     chart_data = pd.DataFrame({
         "プラン": ["現状", "改定案(100%維持)", "改定案(想定維持率)"],
-        "報酬額": [current_rev, new_rev_100, new_rev_actual]
+        "報酬総額": [current_rev, new_rev_100, new_rev_actual]
     })
     st.bar_chart(chart_data, x="プラン", y="報酬総額")
 
