@@ -70,31 +70,31 @@ if check_password():
 
     # --- メイン画面：改定案の作成 ---
     # --- メイン画面：改定案の作成 (操作性改善版) ---
-st.subheader("📝 改定案の詳細設定")
-st.info("💡 スライダーで大まかに動かし、右側の入力ボックスで微調整が可能です。")
-
-# 境界金額の設定（スライダーの刻みを細かくし、入力欄も追加）
-st.write("**【境界金額の変更 (万円)】**")
-col_b1, col_b2, col_b3 = st.columns(3)
-with col_b1:
-    b1 = st.number_input("第1境界", min_value=100, max_value=1000, value=300, step=10) * 10000
-with col_b2:
-    b2 = st.number_input("第2境界", min_value=1000, max_value=5000, value=3000, step=50) * 10000
-with col_b3:
-    b3 = st.number_input("第3境界", min_value=5000, max_value=50000, value=30000, step=500) * 10000
-
-# 報酬割合の設定（スライダーと数値入力を併用）
-st.write("**【各層の報酬割合 (%)】**")
-col_r1, col_r2, col_r3, col_r4 = st.columns(4)
-
-with col_r1:
-    r1 = st.number_input("新 第1層 (%)", 0.0, 40.0, 20.0, step=0.1, format="%.1f")
-with col_r2:
-    r2 = st.number_input("新 第2層 (%)", 0.0, 40.0, 15.0, step=0.1, format="%.1f")
-with col_r3:
-    r3 = st.number_input("新 第3層 (%)", 0.0, 40.0, 10.0, step=0.1, format="%.1f")
-with col_r4:
-    r4 = st.number_input("新 第4層 (%)", 0.0, 40.0, 6.0, step=0.1, format="%.1f")
+    st.subheader("📝 改定案の詳細設定")
+    st.info("💡 スライダーで大まかに動かし、右側の入力ボックスで微調整が可能です。")
+    
+    # 境界金額の設定（スライダーの刻みを細かくし、入力欄も追加）
+    st.write("**【境界金額の変更 (万円)】**")
+    col_b1, col_b2, col_b3 = st.columns(3)
+    with col_b1:
+        b1 = st.number_input("第1境界", min_value=100, max_value=1000, value=300, step=10) * 10000
+    with col_b2:
+        b2 = st.number_input("第2境界", min_value=1000, max_value=5000, value=3000, step=50) * 10000
+    with col_b3:
+        b3 = st.number_input("第3境界", min_value=5000, max_value=50000, value=30000, step=500) * 10000
+    
+    # 報酬割合の設定（スライダーと数値入力を併用）
+    st.write("**【各層の報酬割合 (%)】**")
+    col_r1, col_r2, col_r3, col_r4 = st.columns(4)
+    
+    with col_r1:
+        r1 = st.number_input("新 第1層 (%)", 0.0, 40.0, 20.0, step=0.1, format="%.1f")
+    with col_r2:
+        r2 = st.number_input("新 第2層 (%)", 0.0, 40.0, 15.0, step=0.1, format="%.1f")
+    with col_r3:
+        r3 = st.number_input("新 第3層 (%)", 0.0, 40.0, 10.0, step=0.1, format="%.1f")
+    with col_r4:
+        r4 = st.number_input("新 第4層 (%)", 0.0, 40.0, 6.0, step=0.1, format="%.1f")
 
 # 市場反応（維持率）
 st.write("**【市場の反応】**")
