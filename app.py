@@ -38,19 +38,20 @@ if check_password():
     # --- 4. サイドバー：案件分布 ＆ 現状の基準 ---
     st.sidebar.header("1. 案件分布（ベースデータ）")
     
+    # ユーザーが手直しした初期データ
     base_data = pd.DataFrame({
         "解決金 (円)": [500000, 1000000, 1500000, 3000000, 5000000, 10000000, 50000000, 100000000, 200000000],
         "案件数": [300, 200, 150, 100, 70, 40, 20, 7, 3]
     })
 
-    # 【修正1】解決金にカンマを表示
+    # 解決金にカンマを表示
     edited_df = st.sidebar.data_editor(
         base_data, 
         num_rows="dynamic",
         column_config={
             "解決金 (円)": st.column_config.NumberColumn(
                 "解決金 (円)",
-                format="%d", # カンマ区切り
+                format="%d", 
                 min_value=0,
             ),
             "案件数": st.column_config.NumberColumn(
@@ -65,12 +66,10 @@ if check_password():
     st.sidebar.divider()
     st.sidebar.header("2. 現状の基準設定")
     
-    # 【修正2】単位（万円）の明示
     cb1 = st.sidebar.number_input("現状: 第1境界 (万円)", 100, 1000, 300, 10, key="cb1") * 10000
     cb2 = st.sidebar.number_input("現状: 第2境界 (万円)", 1000, 5000, 3000, 50, key="cb2") * 10000
     cb3 = st.sidebar.number_input("現状: 第3境界 (万円)", 5000, 50000, 30000, 500, key="cb3") * 10000
     
-    # 【修正3】スライダーを数値入力（＋/－方式）に変更
     cr1 = st.sidebar.number_input("現状: 第1層 (%)", 0.0, 40.0, 24.0, 0.5, key="cr1")
     cr2 = st.sidebar.number_input("現状: 第2層 (%)", 0.0, 40.0, 15.0, 0.5, key="cr2")
     cr3 = st.sidebar.number_input("現状: 第3層 (%)", 0.0, 40.0, 9.0, 0.5, key="cr3")
@@ -95,7 +94,6 @@ if check_password():
         nr4 = st.number_input("改定: 第4層 (%)", 0.0, 40.0, 4.5, 0.1, format="%.1f")
     with col_p3:
         st.write("**【市場反応】**")
-        # 【修正4】スライダーを数値入力（＋/－方式）に変更
         retention_val = st.number_input("想定される顧客維持率 (%)", 50.0, 100.0, 95.0, 0.5)
         retention = retention_val / 100
         st.write(f"維持率: {retention*100:.1f}%")
@@ -126,18 +124,27 @@ if check_password():
     })
     st.bar_chart(chart_data, x="プラン", y="報酬総額")
 
-    # --- 7. 詳細テーブル ＆ CSV ---
+    # --- 7. 詳細テーブル ＆ CSV (案件分布データと連動) ---
     st.divider()
-    st.subheader("・1件あたりの詳細比較表")
-    sample_amounts = [500_000, 1_500_000, 3_000_000, 5_000_000, 10_000_000, 30_000_000, 100_000_000, 500_000_000]
+    st.subheader("🧐 案件分布に基づいた1件あたりの詳細比較表")
+    
+    # 案件分布（ベースデータ）から「解決金」のリストを取得
+    # 重複を排除して、金額の小さい順に並べ替えます
+    target_amounts = sorted(edited_df["解決金 (円)"].unique().tolist())
+    
     comp_rows = []
-    for amt in sample_amounts:
+    for amt in target_amounts:
         c_f = calculate_fee(amt, current_brackets)
         n_f = calculate_fee(amt, new_brackets)
-        comp_rows.append({"解決金額": amt, "現状報酬": int(c_f), "改定報酬": int(n_f), "差額": int(n_f - c_f)})
+        comp_rows.append({
+            "解決金額": amt, 
+            "現状報酬": int(c_f), 
+            "改定報酬": int(n_f), 
+            "差額": int(n_f - c_f)
+        })
     
     comp_df = pd.DataFrame(comp_rows)
     st.table(comp_df.style.format("{:,}"))
 
     csv = comp_df.to_csv(index=False).encode('utf-8-sig')
-    st.download_button("📊 比較データをCSVで保存", data=csv, file_name='fee_comparison.csv', mime='text/csv')
+    st.download_button("📊 比較データをCSVで保存", data=csv, file_name='fee_comparison_report.csv', mime='text/csv')
