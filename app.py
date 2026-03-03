@@ -13,7 +13,7 @@ def check_password():
     return True
 
 def password_entered():
-    if st.session_state["password"] == "office2024":
+    if st.session_state["password"] == "Tokyo":
         st.session_state["password_correct"] = True
         del st.session_state["password"]
     else:
