@@ -39,8 +39,8 @@ if check_password():
     st.sidebar.header("1. 案件分布（ベースデータ）")
     
     base_data = pd.DataFrame({
-        "解決金 (円)": [500000, 1500000, 5000000, 10000000, 50000000, 400000000],
-        "案件数": [100, 10, 8, 5, 2, 1]
+        "解決金 (円)": [500000, 1000000, 1500000, 3000000, 5000000, 10000000, 50000000, 100000000, 200000000],
+        "案件数": [200, 150, 100, 50, 20, 10, 5, 3, 1]
     })
 
     # 【修正1】解決金にカンマを表示
@@ -50,11 +50,12 @@ if check_password():
         column_config={
             "解決金 (円)": st.column_config.NumberColumn(
                 "解決金 (円)",
-                format="%d", # カンマ区切り
+                format=",d", # カンマ区切り
                 min_value=0,
             ),
             "案件数": st.column_config.NumberColumn(
                 "案件数",
+                format=",d",
                 min_value=0,
                 step=1
             )
