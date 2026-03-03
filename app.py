@@ -50,12 +50,12 @@ if check_password():
         column_config={
             "解決金 (円)": st.column_config.NumberColumn(
                 "解決金 (円)",
-                format=",d", # カンマ区切り
+                format="%,d", # カンマ区切り
                 min_value=0,
             ),
             "案件数": st.column_config.NumberColumn(
                 "案件数",
-                format=",d",
+                format="%,d",
                 min_value=0,
                 step=1
             )
