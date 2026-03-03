@@ -30,7 +30,7 @@ def check_password():
 def password_entered():
     """入力されたパスワードをチェックする"""
     # ここに好きなパスワードを設定してください（例: "office2024"）
-    if st.session_state["password"] == "office2024":
+    if st.session_state["password"] == "Tokyo":
         st.session_state["password_correct"] = True
         del st.session_state["password"]  # セキュリティのため入力を消去
     else:
